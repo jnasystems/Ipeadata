@@ -2,17 +2,15 @@
 
 set -e
 
-echo "🔧 Entrando na pasta do projeto Vite..."
-cd portfolio_site
-
-echo "📦 Gerando build com npm run build..."
+echo "🔧 Gerando build com npm run build..."
 npm run build
 
-# Salva a pasta onde o build foi feito
-BUILD_DIR="$(pwd)/dist"
+# Caminho absoluto do diretório do script
+SCRIPT_DIR=$(pwd)
 
-echo "⬅️ Voltando para a raiz do repositório..."
-cd ..
+# Cria diretório temporário fora do projeto Git
+TMP_DIR="$(mktemp -d)"
+cp -r "$SCRIPT_DIR/dist/"* "$TMP_DIR"
 
 CURRENT_BRANCH=$(git branch --show-current)
 
@@ -22,12 +20,15 @@ git checkout page
 echo "🧹 Limpando arquivos antigos..."
 find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
 
-echo "📂 Copiando arquivos da build para a raiz da branch..."
-cp -r "$BUILD_DIR/"* .
+echo "📦 Copiando build da pasta temporária direto para a raiz da branch..."
+cp -r "$TMP_DIR"/* .
+
+echo "🧽 Removendo build temporária..."
+rm -rf "$TMP_DIR"
 
 echo "📤 Commitando e enviando para o GitHub..."
 git add .
-git commit -m "Deploy automático para GitHub Pages"
+git commit -m "Deploy automático sem subpasta"
 git push origin page
 
 echo "↩️ Voltando para a branch '$CURRENT_BRANCH'..."
