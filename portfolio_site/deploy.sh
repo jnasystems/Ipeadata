@@ -5,9 +5,8 @@ set -e
 echo "🔧 Gerando build com npm run build..."
 npm run build
 
-# Caminho absoluto temporário (fora do repositório)
-TMP_DIR="/tmp/deploy_tmp_$(date +%s)"
-mkdir -p "$TMP_DIR"
+# Cria build temporária fora do Git
+TMP_DIR="$(mktemp -d)"
 cp -r dist/* "$TMP_DIR"
 
 CURRENT_BRANCH=$(git branch --show-current)
@@ -18,10 +17,10 @@ git checkout page
 echo "🧹 Limpando arquivos antigos..."
 find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
 
-echo "📦 Copiando arquivos da build temporária para a raiz da branch 'page'..."
+echo "📦 Copiando arquivos da build para a raiz da branch 'page'..."
 cp -r "$TMP_DIR"/* .
 
-echo "🧽 Limpando build temporário..."
+echo "🧽 Limpando build temporária..."
 rm -rf "$TMP_DIR"
 
 echo "📤 Commitando e enviando..."
