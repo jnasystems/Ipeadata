@@ -17,11 +17,11 @@ git checkout page
 echo "🧹 Limpando arquivos antigos..."
 find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
 
-echo "📦 Copiando arquivos da build para a raiz..."
-cp -r ../portfolio_site/tmp_dist/* .
+echo "📦 Copiando arquivos da build para a raiz da branch 'page'..."
+cp -r tmp_dist/* .
 
 echo "🧽 Removendo build temporária..."
-rm -rf ../portfolio_site/tmp_dist
+rm -rf tmp_dist
 
 echo "📤 Commitando e enviando..."
 git add .
