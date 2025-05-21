@@ -10,7 +10,9 @@ SCRIPT_DIR=$(pwd)
 
 # Cria diretório temporário fora do projeto Git
 TMP_DIR="$(mktemp -d)"
-cp -r "$SCRIPT_DIR/dist/"* "$TMP_DIR"
+
+# Copia apenas o conteúdo de 'portfolio_site' para o diretório temporário
+cp -r "$SCRIPT_DIR/portfolio_site/"* "$TMP_DIR"
 
 CURRENT_BRANCH=$(git branch --show-current)
 
@@ -20,7 +22,7 @@ git checkout page
 echo "🧹 Limpando arquivos antigos..."
 find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
 
-echo "📦 Copiando build da pasta temporária direto para a raiz da branch..."
+echo "📦 Copiando arquivos direto para a raiz da branch..."
 cp -r "$TMP_DIR"/* .
 
 echo "🧽 Removendo build temporária..."
