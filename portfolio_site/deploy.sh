@@ -20,6 +20,9 @@ git checkout page
 echo "🧹 Limpando arquivos antigos..."
 find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
 
+# 🔥 Remove explicitamente a pasta portfolio_site, mesmo se sobrou
+rm -rf portfolio_site
+
 echo "📦 Copiando build da pasta temporária direto para a raiz da branch..."
 cp -r "$TMP_DIR"/* .
 
