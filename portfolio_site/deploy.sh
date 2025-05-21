@@ -2,15 +2,17 @@
 
 set -e
 
-echo "🔧 Gerando build com npm run build..."
+echo "🔧 Entrando na pasta do projeto Vite..."
+cd portfolio_site
+
+echo "📦 Gerando build com npm run build..."
 npm run build
 
-# Caminho absoluto do diretório do script
-SCRIPT_DIR=$(pwd)
+# Salva a pasta onde o build foi feito
+BUILD_DIR="$(pwd)/dist"
 
-# Cria diretório temporário fora do projeto Git
-TMP_DIR="$(mktemp -d)"
-cp -r "$SCRIPT_DIR/dist/"* "$TMP_DIR"
+echo "⬅️ Voltando para a raiz do repositório..."
+cd ..
 
 CURRENT_BRANCH=$(git branch --show-current)
 
@@ -20,18 +22,12 @@ git checkout page
 echo "🧹 Limpando arquivos antigos..."
 find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
 
-# 🔥 Remove explicitamente a pasta portfolio_site, mesmo se sobrou
-rm -rf portfolio_site
-
-echo "📦 Copiando build da pasta temporária direto para a raiz da branch..."
-cp -r "$TMP_DIR"/* .
-
-echo "🧽 Removendo build temporária..."
-rm -rf "$TMP_DIR"
+echo "📂 Copiando arquivos da build para a raiz da branch..."
+cp -r "$BUILD_DIR/"* .
 
 echo "📤 Commitando e enviando para o GitHub..."
 git add .
-git commit -m "Deploy automático sem subpasta"
+git commit -m "Deploy automático para GitHub Pages"
 git push origin page
 
 echo "↩️ Voltando para a branch '$CURRENT_BRANCH'..."
