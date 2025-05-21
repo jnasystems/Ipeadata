@@ -5,7 +5,7 @@ set -e
 echo "🔧 Gerando build com npm run build..."
 npm run build
 
-# Cria build temporária fora do Git
+# Cria diretório temporário fora do projeto
 TMP_DIR="$(mktemp -d)"
 cp -r dist/* "$TMP_DIR"
 
