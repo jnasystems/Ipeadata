@@ -89,10 +89,10 @@ export default function App() {
       whileHover={{ scale: 1.02 }}
     >
       <img
-        src="/Portfolio/images/projeto1.jpg"
-        alt="Dashboard Power BI"
-        className="w-full h-48 object-cover"
-        onClick={() => setImagemExpandida('/images/projeto1.jpg')}
+      src="/Portfolio/images/projeto1.jpg"
+      alt="Integração API"
+      className="w-full h-48 object-cover"
+      onClick={() => setImagemExpandida('/Portfolio/images/projeto1.jpg')}
       />
       <div className="p-6">
         <h3 className="text-2xl font-semibold text-black mb-2">
@@ -111,10 +111,10 @@ export default function App() {
       whileHover={{ scale: 1.02 }}
     >
       <img
-        src="/Portfolio/images/projeto2.png"
-        alt="Pipeline Databricks"
-        className="w-full h-48 object-cover"
-        onClick={() => setImagemExpandida('/images/projeto2.jpg')}
+      src="/Portfolio/images/projeto2.jpg"
+      alt="Integração API"
+      className="w-full h-48 object-cover"
+      onClick={() => setImagemExpandida('/Portfolio/images/projeto2.jpg')}
       />
       <div className="p-6">
         <h3 className="text-2xl font-semibold text-black mb-2">
@@ -151,10 +151,10 @@ export default function App() {
       whileHover={{ scale: 1.02 }}
     >
       <img
-        src="/images/projeto3.jpg"
-        alt="Integração API"
-        className="w-full h-48 object-cover"
-        onClick={() => setImagemExpandida('/images/projeto1.jpg')}
+      src="/Portfolio/images/projeto3.jpg"
+      alt="Integração API"
+      className="w-full h-48 object-cover"
+      onClick={() => setImagemExpandida('/Portfolio/images/projeto3.jpg')}
       />
       <div className="p-6">
         <h3 className="text-2xl font-semibold text-black mb-2">
