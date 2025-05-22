@@ -1,2 +1,5 @@
+# Ignorar pastas que não devem ser versionadas
+node_modules/
 dist/
-portfolio_site/
+.vite/
+*.log
