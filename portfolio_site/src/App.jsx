@@ -46,7 +46,7 @@ export default function App() {
 
                 {/* imagem por cima */}
                 <img
-                  src="/images/imagem1.png"
+                  src="/images/logo1.png"
                   alt="Imagem de computador"
                   className="relative z-10 w-[300px] md:w-[400px]"
                 />
