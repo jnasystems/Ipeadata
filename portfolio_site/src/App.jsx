@@ -114,7 +114,7 @@ export default function App() {
       src="/Portfolio/images/projeto2.png"
       alt="Integração API"
       className="w-full h-48 object-cover"
-      onClick={() => setImagemExpandida('/Portfolio/images/projeto2.jpg')}
+      onClick={() => setImagemExpandida('/Portfolio/images/projeto2.png')}
       />
       <div className="p-6">
         <h3 className="text-2xl font-semibold text-black mb-2">
