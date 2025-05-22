@@ -5,10 +5,11 @@ set -e
 echo "🔧 Gerando build com npm run build..."
 npm run build
 
+# Caminho absoluto do diretório do script
 SCRIPT_DIR=$(pwd)
-TMP_DIR="$(mktemp -d)"
 
-# Copia o conteúdo da pasta dist (resultado da build) para o diretório temporário
+# Cria diretório temporário fora do projeto Git
+TMP_DIR="$(mktemp -d)"
 cp -r "$SCRIPT_DIR/dist/"* "$TMP_DIR"
 
 CURRENT_BRANCH=$(git branch --show-current)
@@ -16,10 +17,10 @@ CURRENT_BRANCH=$(git branch --show-current)
 echo "🔄 Mudando para a branch 'page'..."
 git checkout page
 
-echo "🧹 Limpando arquivos antigos, exceto .git ..."
+echo "🧹 Limpando arquivos antigos..."
 find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
 
-echo "📦 Copiando arquivos da build direto para a raiz da branch..."
+echo "📦 Copiando build da pasta temporária direto para a raiz da branch..."
 cp -r "$TMP_DIR"/* .
 
 echo "🧽 Removendo build temporária..."
