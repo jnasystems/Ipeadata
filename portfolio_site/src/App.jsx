@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Typewriter } from 'react-simple-typewriter';
 
 export default function App() {
   const [imagemExpandida, setImagemExpandida] = useState(null);
@@ -21,8 +22,20 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
             >
-              Olá, <span className="text-red-500">Bem Vindo</span>
+              {' '}
+              <span className="text-red-500">
+                <Typewriter
+                  words={['Bem Vindo.', 'Welcome.']}
+                  loop={0}
+                  cursor
+                  cursorStyle="|"
+                  typeSpeed={80}
+                  deleteSpeed={50}
+                  delaySpeed={1500}
+                />
+              </span>
             </motion.h1>
+
             <motion.p
               className="text-lg md:text-2xl text-gray-300"
               initial={{ opacity: 0, y: 20 }}
