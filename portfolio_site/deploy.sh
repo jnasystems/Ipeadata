@@ -29,10 +29,18 @@ cp -r "$TMP_DIR"/* .
 echo "🧽 Limpando build temporária..."
 rm -rf "$TMP_DIR"
 
-echo "📤 Commitando e enviando para o GitHub..."
 git add .
-git commit -m "Deploy automático sem subpasta"
+
+# Tenta fazer commit — mas ignora erro se nada mudou
+if git commit -m "Deploy automático sem subpasta"; then
+  echo "✅ Commit realizado."
+else
+  echo "ℹ️ Nenhuma mudança detectada para commit. Forçando push mesmo assim..."
+fi
+
+# Push sempre (útil caso algo tenha sido sobrescrito mas sem hash novo)
 git push origin page
+
 
 echo "↩️ Voltando para a branch '$CURRENT_BRANCH'..."
 git checkout "$CURRENT_BRANCH"
