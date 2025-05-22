@@ -4,6 +4,9 @@ set -e
 
 PROJECT_DIR_NAME="portfolio_site"
 
+echo "📦 Instalando dependências com npm install..."
+npm install
+
 echo "🔧 Gerando build com npm run build..."
 npm run build
 
