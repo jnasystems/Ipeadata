@@ -111,7 +111,7 @@ export default function App() {
       whileHover={{ scale: 1.02 }}
     >
       <img
-      src="/Portfolio/images/projeto2.jpg"
+      src="/Portfolio/images/projeto2.png"
       alt="Integração API"
       className="w-full h-48 object-cover"
       onClick={() => setImagemExpandida('/Portfolio/images/projeto2.jpg')}
