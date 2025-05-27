@@ -88,8 +88,8 @@ export default function App() {
                 Painel interativo com dados de vendas por região e metas por time. Integrado ao banco de dados SQL Server e atualização automática diária.
               </p>
               <div className="flex gap-4">
-                <a href="https://github.com/seuusuario/projeto1" target="_blank" rel="noopener noreferrer"><FaGithub className="w-6 h-6 text-black hover:text-gray-700" /></a>
-                <a href="https://seudominio.com/dashboard" target="_blank" rel="noopener noreferrer"><HiOutlineExternalLink className="w-6 h-6 text-black hover:text-gray-700" /></a>
+                <a href="https://github.com/NathanThomaz/CryptoPrice-Dashboard" target="_blank" rel="noopener noreferrer"><FaGithub className="w-6 h-6 text-black hover:text-gray-700" /></a>
+                <a href="https://dashcrypto-app.streamlit.app/" target="_blank" rel="noopener noreferrer"><HiOutlineExternalLink className="w-6 h-6 text-black hover:text-gray-700" /></a>
               </div>
             </div>
           </motion.div>
