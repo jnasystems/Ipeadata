@@ -98,13 +98,13 @@ export default function App() {
           <motion.div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all overflow-hidden" whileHover={{ scale: 1.02 }}>
             <img src="/Portfolio/images/projeto2.png" alt="ETL Databricks" className="w-full h-48 object-cover" onClick={() => setImagemExpandida('/Portfolio/images/projeto2.png')} />
             <div className="p-6">
-              <h3 className="text-2xl font-semibold text-black mb-2">Pipeline ETL com Databricks</h3>
+              <h3 className="text-2xl font-semibold text-black mb-2">Dashboard Ipeadata</h3>
               <p className="text-gray-700 mb-4">
-                Processo automatizado com PySpark, particionamento Delta Lake e carga em camada Silver.
+                Desenvolvimento de um dashboard interativo com Streamlit para visualização de dados públicos do IPEA. Os dados foram tratados e transformados com Python e pandas a partir de arquivos CSV, permitindo análises organizadas por tema e município. O projeto destaca a combinação entre engenharia de dados leve e visualização acessível em uma aplicação web.
               </p>
               <div className="flex gap-4">
-                <a href="https://github.com/seuusuario/projeto2" target="_blank" rel="noopener noreferrer"><FaGithub className="w-6 h-6 text-black hover:text-gray-700" /></a>
-                <a href="https://seudominio.com/etl" target="_blank" rel="noopener noreferrer"><HiOutlineExternalLink className="w-6 h-6 text-black hover:text-gray-700" /></a>
+                <a href="https://github.com/JNA-Systems/Ipeadata" target="_blank" rel="noopener noreferrer"><FaGithub className="w-6 h-6 text-black hover:text-gray-700" /></a>
+                <a href="https://dadosipeadata.streamlit.app/" target="_blank" rel="noopener noreferrer"><HiOutlineExternalLink className="w-6 h-6 text-black hover:text-gray-700" /></a>
               </div>
             </div>
           </motion.div>
