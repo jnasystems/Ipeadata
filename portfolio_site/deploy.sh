@@ -2,7 +2,8 @@
 
 set -e
 
-PROJECT_DIR_NAME="portfolio_site"
+# Vai para a pasta onde está o script
+cd "$(dirname "$0")"
 
 echo "📦 Instalando dependências com npm install..."
 npm install
@@ -34,19 +35,21 @@ rm -rf "$TMP_DIR"
 
 git add .
 
-# Tenta fazer commit — mas ignora erro se nada mudou
-if git commit -m "Deploy automático sem subpasta"; then
+if git commit -m "Deploy automático para GitHub Pages"; then
   echo "✅ Commit realizado."
 else
   echo "ℹ️ Nenhuma mudança detectada para commit. Forçando push mesmo assim..."
 fi
 
-# Push sempre (útil caso algo tenha sido sobrescrito mas sem hash novo)
-git push origin page
+# Push forçado para garantir deploy
+echo "🚀 Enviando para GitHub Pages com --force..."
+git push origin page --force
 
-
-echo "↩️ Voltando para a branch '$CURRENT_BRANCH'..."
+echo "🔁 Voltando para a branch '$CURRENT_BRANCH'..."
 git checkout "$CURRENT_BRANCH"
 cd "$PROJECT_ROOT"
 
-echo "✅ Deploy finalizado com sucesso!"
+echo "🎉 Deploy finalizado com sucesso!"
+
+# Comando para dar permissão de execução ao script
+# chmod +x deploy.sh
