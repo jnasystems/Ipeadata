@@ -2,7 +2,7 @@ name: Atualizar Dados IPEA
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # Executa todo dia às 03:00 UTC (01:00 em Brasília)
+    - cron: '0 4 * * *'  # Executa todo dia às 04:00 UTC (01:00 em Brasília)
   workflow_dispatch:     # Permite execução manual no GitHub
 
 permissions:
