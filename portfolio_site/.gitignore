@@ -1,6 +1,0 @@
-# Ignorar pastas que não devem ser versionadas
-node_modules/
-dist/
-.vite/
-*.log
-node_modules/
