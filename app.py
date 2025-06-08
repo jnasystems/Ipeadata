@@ -12,7 +12,8 @@ def load_data():
     paths = {
         "IBGE - Efetivo de Animais":  "data/Efetivos/passo3/efetivo_animais_municipios.csv",
         "IBGE - Produção Quantidade": "data/produção/passo1/quantidade_produçao_alimenticio.csv",
-        "IBGE - Produção Valor":      "data/produção/passo3/valor_produçao_municipios.csv"
+        "IBGE - Produção Valor":      "data/produção/passo3/valor_produçao_municipios.csv",
+        "IBGE - Área Colhida":        "data/area colhida/passo1/area_colhida_municipios.csv"
     }
 
     for origin_name, file_path in paths.items():

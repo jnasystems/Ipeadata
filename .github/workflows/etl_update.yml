@@ -2,7 +2,7 @@ name: Atualizar Dados IPEA
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # Executa todo dia às 03:00 UTC (00:00 em Brasília)
+    - cron: '0 4 * * *'  # Executa todo dia às 03:00 UTC (01:00 em Brasília)
   workflow_dispatch:     # Permite execução manual no GitHub
 
 permissions:
@@ -29,13 +29,18 @@ jobs:
           pip install -r requirements.txt
 
       - name: ⚙️ Rodar script ETL
-        run: python src/Efetivos/passo3.py
+        run: |
+              python src/Efetivos/passo3.py &
+              python src/Produção/passo1.py &
+              python src/Produção/passo3.py &
+              python src\area colhida\passo1.py &
+              wait
 
       - name: 🔁 Commit e push dos CSVs atualizados
         run: |
           git config user.name "jonasksa"
           git config user.email "jonaskasakewitch32@gmail.com"
-          git add data/Efetivos/passo3/efetivo_animais_municipios.csv
+          git add -A
           git commit -m "📊 Atualização automática dos dados do IPEA" || echo "Nenhuma alteração para commit"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push origin main
