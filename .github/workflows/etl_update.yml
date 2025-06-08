@@ -2,7 +2,7 @@ name: Atualizar Dados IPEA
 
 on:
   schedule:
-    - cron: '0 4 * * *'  # Executa todo dia às 04:00 UTC (01:00 em Brasília)
+    - cron: '0 10 * * *'  # Executa todo dia às 04:00 UTC (01:00 em Brasília)
   workflow_dispatch:     # Permite execução manual no GitHub
 
 permissions:
@@ -33,7 +33,7 @@ jobs:
               python src/Efetivos/passo3.py &
               python src/Produção/passo1.py &
               python src/Produção/passo3.py &
-              python src\area colhida\passo1.py &
+              python src/area colhida/passo1.py &
               wait
 
       - name: 🔁 Commit e push dos CSVs atualizados
