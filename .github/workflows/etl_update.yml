@@ -5,6 +5,9 @@ on:
     - cron: '0 3 * * *'  # Executa todo dia às 03:00 UTC (00:00 em Brasília)
   workflow_dispatch:     # Permite execução manual no GitHub
 
+permissions:
+  contents: write  # Necessário para permitir push com GITHUB_TOKEN
+
 jobs:
   run-etl:
     runs-on: ubuntu-latest
@@ -30,8 +33,9 @@ jobs:
 
       - name: 🔁 Commit e push dos CSVs atualizados
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "jonasksa"
+          git config user.email "jonaskasakewitch32@gmail.com"
           git add data/Efetivos/passo3/efetivo_animais_municipios.csv
           git commit -m "📊 Atualização automática dos dados do IPEA" || echo "Nenhuma alteração para commit"
-          git push
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push origin main
