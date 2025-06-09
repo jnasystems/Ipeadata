@@ -1,0 +1,32 @@
+name: Entrar no Site a Cada 30 Minutos
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"  # Executa a cada 30 minutos (UTC)
+  workflow_dispatch:         # Permite execução manual também
+
+jobs:
+  acessar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Instalar dependências do sistema
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser chromium-chromedriver
+          sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+          sudo ln -s /usr/bin/chromium-browser /usr/bin/google-chrome
+
+      - name: Instalar dependências Python
+        run: pip install selenium
+
+      - name: Rodar o script Python
+        run: python entrar_no_site.py
