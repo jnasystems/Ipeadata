@@ -18,20 +18,18 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Instalar Google Chrome e ChromeDriver
+      - name: Instalar Google Chrome 126 e ChromeDriver correspondente
         run: |
           sudo apt-get update
           sudo apt-get install -y wget unzip curl gnupg xvfb
 
-          # Baixa e instala o Google Chrome
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb || true
+          # Instala o Chrome 126 manualmente
+          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_126.0.6478.114-1_amd64.deb
+          sudo dpkg -i google-chrome-stable_126.0.6478.114-1_amd64.deb || true
           sudo apt-get -f install -y
 
-          # Descobre a versão principal do Chrome
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.' | head -1 | tr -d '.')
-          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-          wget https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
+          # Baixa e instala o ChromeDriver compatível (versão 126)
+          wget https://chromedriver.storage.googleapis.com/126.0.6478.114/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/bin/chromedriver
           sudo chmod +x /usr/bin/chromedriver
@@ -39,7 +37,5 @@ jobs:
       - name: Instalar dependências Python
         run: pip install selenium
 
-      - name: Rodar o script Python com Xvfb (modo headless compatível com CI)
-        run: |
-          sudo apt-get install -y xvfb
-          xvfb-run python entrar_no_site.py
+      - name: Rodar o script Python
+        run: xvfb-run python entrar_no_site.py
