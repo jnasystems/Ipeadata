@@ -1,4 +1,4 @@
-name: Entrar no Site a Cada 30 Minutos
+name: Entrar no Site 
 
 on:
   schedule:
@@ -18,15 +18,27 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Instalar dependências do sistema
+      - name: Instalar Google Chrome e ChromeDriver compatível
         run: |
           sudo apt-get update
-          sudo apt-get install -y chromium-browser chromium-chromedriver
-          sudo ln -sf /snap/bin/chromium.chromedriver /usr/bin/chromedriver
-          sudo ln -sf /snap/bin/chromium /usr/bin/google-chrome
+          sudo apt-get install -y wget unzip gnupg
+          
+          # Instala o Google Chrome estável
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
+          
+          # Pega a versão exata do Chrome instalada
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
+          DRIVER_VERSION=$(wget -qO- "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+          
+          # Baixa e instala o ChromeDriver
+          wget https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/bin/chromedriver
+          sudo chmod +x /usr/bin/chromedriver
 
       - name: Instalar dependências Python
-        run: pip install selenium webdriver-manager
+        run: pip install selenium
 
       - name: Rodar o script Python
         run: python entrar_no_site.py
