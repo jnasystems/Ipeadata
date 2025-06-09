@@ -26,7 +26,7 @@ jobs:
           sudo ln -sf /snap/bin/chromium /usr/bin/google-chrome
 
       - name: Instalar dependências Python
-        run: pip install selenium
+        run: pip install selenium webdriver-manager
 
       - name: Rodar o script Python
         run: python entrar_no_site.py
