@@ -2,7 +2,7 @@ name: Entrar no Site
 
 on:
   schedule:
-    - cron: "*/30 * * * *"  # Executa a cada 30 minutos (UTC)
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -18,18 +18,18 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Instalar Google Chrome 126 e ChromeDriver correspondente
+      - name: Instalar Chrome e ChromeDriver (versão 124)
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget unzip curl gnupg xvfb
+          sudo apt-get install -y wget unzip curl gnupg libu2f-udev xvfb
 
-          # Instala o Chrome 126 manualmente
-          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_126.0.6478.114-1_amd64.deb
-          sudo dpkg -i google-chrome-stable_126.0.6478.114-1_amd64.deb || true
+          # Instala o Chrome 124
+          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_124.0.6367.119-1_amd64.deb
+          sudo dpkg -i google-chrome-stable_124.0.6367.119-1_amd64.deb || true
           sudo apt-get -f install -y
 
-          # Baixa e instala o ChromeDriver compatível (versão 126)
-          wget https://chromedriver.storage.googleapis.com/126.0.6478.114/chromedriver_linux64.zip
+          # Instala o ChromeDriver compatível
+          wget https://chromedriver.storage.googleapis.com/124.0.6367.119/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/bin/chromedriver
           sudo chmod +x /usr/bin/chromedriver
