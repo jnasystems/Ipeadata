@@ -1,8 +1,8 @@
-name: Entrar no Site com Edge
+name: Entrar no Site com Chrome
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/30 * * * *"  # Executa a cada 30 minutos (UTC)
   workflow_dispatch:
 
 jobs:
@@ -18,29 +18,34 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Instalar Microsoft Edge e msedgedriver
+      - name: Instalar Google Chrome e ChromeDriver compatível
         run: |
-          curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-          sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-          sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
           sudo apt-get update
-          sudo apt-get install -y microsoft-edge-stable unzip wget curl xvfb
+          sudo apt-get install -y wget unzip curl gnupg libu2f-udev xvfb
 
-          # Corrige extração da versão do Edge
-          EDGE_VERSION=$(microsoft-edge-stable --version | grep -oP '\d+\.\d+\.\d+\.\d+' | tr -d '\r\n')
-          EDGE_MAJOR=$(echo $EDGE_VERSION | cut -d '.' -f 1)
+          # Adiciona o repositório oficial do Google Chrome
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
 
-          echo "Edge version: $EDGE_VERSION"
-          DRIVER_VERSION=$(curl -s https://msedgedriver.azureedge.net/LATEST_RELEASE_$EDGE_MAJOR)
+          # Instala o Chrome
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
 
-          wget https://msedgedriver.azureedge.net/${DRIVER_VERSION}/edgedriver_linux64.zip
-          unzip edgedriver_linux64.zip
-          sudo mv msedgedriver /usr/bin/msedgedriver
-          sudo chmod +x /usr/bin/msedgedriver
+          # Extrai versão principal do Chrome (ex: 126)
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+          CHROME_MAJOR=$(echo $CHROME_VERSION | cut -d '.' -f 1)
 
+          echo "✅ Google Chrome versão: $CHROME_VERSION (major: $CHROME_MAJOR)"
+
+          # Baixa o ChromeDriver correspondente
+          DRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR)
+          wget https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/bin/chromedriver
+          sudo chmod +x /usr/bin/chromedriver
 
       - name: Instalar dependências Python
         run: pip install selenium
 
-      - name: Rodar script Python com Edge
+      - name: Rodar script Python com xvfb (modo headless)
         run: xvfb-run python entrar_no_site.py
