@@ -24,16 +24,20 @@ jobs:
           sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
           sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
           sudo apt-get update
-          sudo apt-get install -y microsoft-edge-stable
+          sudo apt-get install -y microsoft-edge-stable unzip wget curl xvfb
 
-          # Instala o driver correspondente
-          EDGE_VERSION=$(microsoft-edge-stable --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+          # Corrige extração da versão do Edge
+          EDGE_VERSION=$(microsoft-edge-stable --version | grep -oP '\d+\.\d+\.\d+\.\d+' | tr -d '\r\n')
           EDGE_MAJOR=$(echo $EDGE_VERSION | cut -d '.' -f 1)
+
+          echo "Edge version: $EDGE_VERSION"
           DRIVER_VERSION=$(curl -s https://msedgedriver.azureedge.net/LATEST_RELEASE_$EDGE_MAJOR)
+
           wget https://msedgedriver.azureedge.net/${DRIVER_VERSION}/edgedriver_linux64.zip
           unzip edgedriver_linux64.zip
           sudo mv msedgedriver /usr/bin/msedgedriver
           sudo chmod +x /usr/bin/msedgedriver
+
 
       - name: Instalar dependências Python
         run: pip install selenium
