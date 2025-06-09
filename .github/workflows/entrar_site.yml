@@ -1,9 +1,9 @@
-name: Entrar no Site 
+name: Entrar no Site
 
 on:
   schedule:
     - cron: "*/30 * * * *"  # Executa a cada 30 minutos (UTC)
-  workflow_dispatch:         # Permite execução manual também
+  workflow_dispatch:
 
 jobs:
   acessar:
@@ -20,19 +20,17 @@ jobs:
 
       - name: Instalar Google Chrome e ChromeDriver
         run: |
-          set +e  # Desativa falha automática do shell para comandos com erro
           sudo apt-get update
-          sudo apt-get install -y wget unzip gnupg
+          sudo apt-get install -y wget unzip curl gnupg xvfb
 
           # Baixa e instala o Google Chrome
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || true
           sudo apt-get -f install -y
-          set -e  # Reativa falha automática após lidar com possíveis erros
-          
-          # Descobre a versão do Chrome e instala o ChromeDriver correspondente
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-          DRIVER_VERSION=$(wget -qO- "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+
+          # Descobre a versão principal do Chrome
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.' | head -1 | tr -d '.')
+          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
           wget https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/bin/chromedriver
@@ -41,5 +39,7 @@ jobs:
       - name: Instalar dependências Python
         run: pip install selenium
 
-      - name: Rodar o script Python
-        run: python entrar_no_site.py
+      - name: Rodar o script Python com Xvfb (modo headless compatível com CI)
+        run: |
+          sudo apt-get install -y xvfb
+          xvfb-run python entrar_no_site.py
