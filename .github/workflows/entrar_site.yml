@@ -18,31 +18,25 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Instalar Google Chrome e ChromeDriver
+      - name: Instalar Microsoft Edge e msedgedriver
         run: |
           curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
           sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
           sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
           sudo apt-get update
-          sudo apt-get install -y wget unzip curl gnupg xvfb
+          sudo apt-get install -y microsoft-edge-stable
 
-          # Baixa e instala o Google Chrome
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb || true
-          sudo apt-get -f install -y
-
-          # Descobre a versão principal do Chrome
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.' | head -1 | tr -d '.')
-          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-          wget https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/bin/chromedriver
-          sudo chmod +x /usr/bin/chromedriver
+          # Instala o driver correspondente
+          EDGE_VERSION=$(microsoft-edge-stable --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+          EDGE_MAJOR=$(echo $EDGE_VERSION | cut -d '.' -f 1)
+          DRIVER_VERSION=$(curl -s https://msedgedriver.azureedge.net/LATEST_RELEASE_$EDGE_MAJOR)
+          wget https://msedgedriver.azureedge.net/${DRIVER_VERSION}/edgedriver_linux64.zip
+          unzip edgedriver_linux64.zip
+          sudo mv msedgedriver /usr/bin/msedgedriver
+          sudo chmod +x /usr/bin/msedgedriver
 
       - name: Instalar dependências Python
         run: pip install selenium
 
-      - name: Rodar o script Python com Xvfb (modo headless compatível com CI)
-        run: |
-          sudo apt-get install -y xvfb
-          xvfb-run python entrar_no_site.py
+      - name: Rodar script Python com Edge
+        run: xvfb-run python entrar_no_site.py
