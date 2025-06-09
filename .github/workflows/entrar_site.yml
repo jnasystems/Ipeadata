@@ -18,16 +18,19 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Instalar Google Chrome e ChromeDriver compatível
+      - name: Instalar Google Chrome e ChromeDriver
         run: |
+          set +e  # Desativa falha automática do shell para comandos com erro
           sudo apt-get update
           sudo apt-get install -y wget unzip gnupg
 
-          # Instala o Google Chrome estável
+          # Baixa e instala o Google Chrome
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb ; sudo apt-get -f install -y
-
-          # Detecta versão exata do Chrome e instala o driver correspondente
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          sudo apt-get -f install -y
+          set -e  # Reativa falha automática após lidar com possíveis erros
+          
+          # Descobre a versão do Chrome e instala o ChromeDriver correspondente
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
           DRIVER_VERSION=$(wget -qO- "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
           wget https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
