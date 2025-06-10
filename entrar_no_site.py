@@ -5,13 +5,16 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import chromedriver_autoinstaller
+
+# Instala o ChromeDriver automaticamente
+chromedriver_autoinstaller.install()
 
 options = Options()
 options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 
-# Usa o ChromeDriver instalado no sistema
 driver = webdriver.Chrome(options=options)
 
 try:
