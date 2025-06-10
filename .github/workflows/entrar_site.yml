@@ -54,7 +54,8 @@ jobs:
 
 
       - name: Instalar dependências Python
-        run: pip install selenium
+        run: pip install selenium chromedriver-autoinstaller
+
 
       - name: Rodar script Python com xvfb (modo headless)
         run: xvfb-run python entrar_no_site.py
