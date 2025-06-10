@@ -22,27 +22,36 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget unzip curl gnupg libu2f-udev xvfb
-
+      
           # Adiciona o repositório oficial do Google Chrome
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
-
+      
           # Instala o Chrome
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
-
+      
           # Extrai versão principal do Chrome (ex: 126)
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
           CHROME_MAJOR=$(echo $CHROME_VERSION | cut -d '.' -f 1)
-
+      
           echo "✅ Google Chrome versão: $CHROME_VERSION (major: $CHROME_MAJOR)"
-
-          # Baixa o ChromeDriver correspondente
-          DRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR)
-          wget https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
+      
+          # Baixa o ChromeDriver correspondente à versão major
+          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR}")
+      
+          if [[ -z "$DRIVER_VERSION" ]]; then
+            echo "❌ Não foi possível obter a versão do ChromeDriver para o Chrome $CHROME_MAJOR"
+            exit 1
+          fi
+      
+          echo "⬇️ Baixando ChromeDriver versão $DRIVER_VERSION"
+      
+          wget "https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip"
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/bin/chromedriver
           sudo chmod +x /usr/bin/chromedriver
+
 
       - name: Instalar dependências Python
         run: pip install selenium
